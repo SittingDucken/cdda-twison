@@ -1,7 +1,7 @@
 {
-  "name": "Twison",
-  "version": "0.0.1",
-  "description": "Export your Twine 2 story as a JSON document",
+  "name": "cdda_twison",
+  "version": "0.0.2",
+  "description": "Export your Twine 2 story as a JSON document for CDDA NPC talk topics",
   "main": "format.js",
   "scripts": {
     "test": "cd test && mocha test.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lazerwalker/twison"
+    "url": "https://github.com/SittingDucken/cdda-twison/"
   },
-  "author": "Em Lazer-Walker",
+  "author": "SittingDucken",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lazerwalker/twison/issues"
+    "url": "https://github.com/SittingDucken/cdda-twison/issues"
   },
-  "homepage": "https://github.com/lazerwalker/twison",
+  "homepage": "https://github.com/SittingDucken/cdda-twison/",
   "devDependencies": {
     "chai": "^3.4.1",
     "express": "^4.13.3",

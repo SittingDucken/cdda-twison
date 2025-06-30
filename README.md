@@ -1,6 +1,8 @@
-# Twison
+# CDDA_Twison
 
 ![Build Status](https://github.com/lazerwalker/twison/workflows/Build/badge.svg)
+
+CDDA_Twison is a format for for [Twine 2](http://twinery.org/2) that exports JSON formatted for CDDA NPC talk-topics.
 
 Twison is a story format for [Twine 2](http://twinery.org/2) that simply exports to JSON.
 
@@ -10,7 +12,7 @@ It is inspired by [Entweedle](http://www.maximumverbosity.net/twine/Entweedle/) 
 
 From the Twine 2 story select screen, add a story format, and point it to the url `https://lazerwalker.com/twison/format.js`.
 
-From within your story, set the story format to Twison. Choosing "Play" will now give you a JSON file.
+From within your story, set the story format to CDDA_Twison. Choosing "Play" will now give you a JSON file.
 
 ## Output
 
@@ -123,10 +125,10 @@ If you want to hack on Twison itself:
 
 Running `npm start` will start the `watch.js` auto-compile behavior, and also start a local web server that serves the compiled `format.js` file. By default, this will be available at `http://localhost:3000/format.js`. Add that URL as a story format to your copy of Twine 2; every time you save a source file and then re-generate the "Play" view of your story in Twine, it should use the latest version of your code.
 
-This is easier to do with the browser-based version of Twine 2 than with the downloadable copy, as you can just refresh your output page and it'll use the latest version of Twison.
+This is easier to do with the browser-based version of Twine 2 than with the downloadable copy, as you can just refresh your output page and it'll use the latest version of CDDA_Twison.
 
 All contributions are welcome! If making code changes, please be sure to run the test suite (`npm test`) before opening a pull request.
 
 ## License
 
-Twison is licensed under the MIT license. See the LICENSE file for more information.
+CDDA_Twison is licensed under the MIT license. See the LICENSE file for more information.

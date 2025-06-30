@@ -33,9 +33,8 @@ var Twison = {
       var lineWithoutLink = fullLine.replace('[[' + link + ']]', '').trim(); // Replace template literal with string concatenation
 
       return {
-        name: link,
-        link: link,
-        text: lineWithoutLink // Include the full line without the link
+        text: lineWithoutLink, // Include the full line without the link
+        topic: link,
       };
     });
   },
@@ -98,32 +97,29 @@ var Twison = {
    */
   convertPassage: function(passage) {
   	var dict = {text: passage.innerHTML};
-
-    var links = Twison.extractLinksFromText(dict.text);
-    if (links) {
-      dict.links = links;
-    }
-
-    const props = Twison.extractPropsFromText(dict.text);
-    if (props) {
-      dict.props = props;
-    }
-
-    ["name", "pid", "position", "tags"].forEach(function(attr) {
+    dict.topic = "talk_topic"; // Set default type
+    ["name"].forEach(function(attr) {
       var value = passage.attributes[attr].value;
       if (value) {
         dict[attr] = value;
       }
     });
 
-    if(dict.position) {
-      var position = dict.position.split(',')
-      dict.position = {
-        x: position[0],
-        y: position[1]
-      }
+    if (dict.name) {
+      dict.id = dict.name;
+      delete dict.name; // Remove name to avoid confusion with id
     }
-
+    if (dict.text) {
+      dict.dynamic_line = dict.text.split('\n')[0].trim(); // Get the first line and trim whitespace
+    }
+    var links = Twison.extractLinksFromText(dict.text);
+    if (links) {
+      dict.responses = links;
+    }
+    const props = Twison.extractPropsFromText(dict.text);
+    if (props) {
+      dict.props = props;
+    }
     if (dict.tags) {
       dict.tags = dict.tags.split(" ");
     }
@@ -142,41 +138,24 @@ var Twison = {
    */
   convertStory: function(story) {
     var passages = story.getElementsByTagName("tw-passagedata");
-    var convertedPassages = Array.prototype.slice.call(passages).map(Twison.convertPassage);
+    var convertedPassages = Array.prototype.slice.call(passages)
+        .map(Twison.convertPassage)
+        .filter(function(passage) {
+            // Skip passages with name "TALK_DONE" or "TALK_NONE"
+            return passage && passage.id !== "TALK_DONE" && passage.id !== "TALK_NONE";
+        });
 
     var dict = {
       passages: convertedPassages
     };
 
-    ["name", "startnode", "creator", "creator-version", "ifid"].forEach(function(attr) {
-      var value = story.attributes[attr].value;
-      if (value) {
-        dict[attr] = value;
-      }
-    });
-
-    // Add PIDs to links
-    var pidsByName = {};
-    dict.passages.forEach(function(passage) {
-      pidsByName[passage.name] = passage.pid;
-    });
-
-    dict.passages.forEach(function(passage) {
-      if (!passage.links) return;
-      passage.links.forEach(function(link) {
-        link.pid = pidsByName[link.link];
-        if (!link.pid) {
-          link.broken = true;
-        }
-      });
-    });
-    // Modify passages.text to only include the first line of text
+    // Remove passages.text
     dict.passages.forEach(function(passage) {
       if (passage.text) {
-        passage.text = passage.text.split('\n')[0].trim(); // Keep only the first line
+        delete passage.text; // Remove the text key
       }
     });
-    return dict;
+    return dict.passages;
   },
 
   /**
