@@ -21,24 +21,24 @@ var Twison = {
     }
 
     return links.map(function(link) {
-      var differentName = link.match(/\[\[(.*?)\-\&gt;(.*?)\]\]/);
-      if (differentName) {
-        // [[name->link]]
-        return {
-          name: differentName[1],
-          link: differentName[2]
-        };
-      } else {
-        // [[link]]
-        link = link.substring(2, link.length-2)
-        return {
-          name: link,
-          link: link
-        }
-      }
+      // Extract the link name by removing the surrounding [[ and ]]
+      link = link.substring(2, link.length - 2);
+
+      // Find the full line containing the link
+      var fullLine = text.split('\n').find(function(line) {
+        return line.indexOf('[[' + link + ']]') !== -1; // Replace template literal with string concatenation
+      });
+
+      // Remove the link from the full line
+      var lineWithoutLink = fullLine.replace('[[' + link + ']]', '').trim(); // Replace template literal with string concatenation
+
+      return {
+        name: link,
+        link: link,
+        text: lineWithoutLink // Include the full line without the link
+      };
     });
   },
-
   /**
    * Extract the prop entities from the provided text.
    *
@@ -170,7 +170,12 @@ var Twison = {
         }
       });
     });
-
+    // Modify passages.text to only include the first line of text
+    dict.passages.forEach(function(passage) {
+      if (passage.text) {
+        passage.text = passage.text.split('\n')[0].trim(); // Keep only the first line
+      }
+    });
     return dict;
   },
 

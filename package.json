@@ -23,7 +23,7 @@
     "chai": "^3.4.1",
     "express": "^4.13.3",
     "jsdom": "^16.3.0",
-    "uglify-js": "^2.6.1",
+    "uglify-js": "^2.8.29",
     "watch": "^0.16.0"
   },
   "dependencies": {
