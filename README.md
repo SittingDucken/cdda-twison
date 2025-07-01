@@ -123,7 +123,7 @@ What's your story? [[Backstory]]
   },
 ```
 3. Tags
-   - Tags are included for your benefit as reminders. They currently serve no functionallity and need to be deleted before ingesting into CDDA.
+- Tags are included for your benefit as reminders. They currently serve no functionallity and need to be deleted before ingesting into CDDA.
 
 ## Development
 
