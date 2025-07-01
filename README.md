@@ -122,10 +122,12 @@ What's your story? [[Backstory]]
     }
   },
 ```
+3. Tags
+   - Tags are included for your benefit as reminders. They currently serve no functionallity and need to be deleted before ingesting into CDDA.
 
 ## Development
 
-If you want to hack on Twison itself:
+If you want to hack on CDDA_Twison itself:
 
 1. Clone this repo and run `npm install` to install dependencies.
 2. Make your changes to the unminified code in the `src` folder
