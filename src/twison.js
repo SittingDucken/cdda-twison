@@ -16,6 +16,7 @@ var Twison = {
    */
   extractLinksFromText: function(text) {
     var links = text.match(/\[\[.+?\]\]/g);
+    const propRegexPattern = /\{\{((\s|\S)+?)\}\}((\s|\S)+?)\{\{\/\1\}\}/gm;
     if (!links) {
         return null;
     }
@@ -34,12 +35,24 @@ var Twison = {
 
                 // Remove the link from the full line
                 var lineWithoutLink = line.replace(link, '').trim();
-
+                var processedLink = {topic: topic};
+                var props = Twison.extractPropsFromText(line);
+                var lineCleaned = lineWithoutLink.replace(propRegexPattern, '').trim();
+                processedLink.text = lineCleaned;
+                if (props) {
+                  // Check if the props object contains an "effect" key
+                  if (props.effect) {
+                      processedLink.effect = props.effect; // Assign the "effect" key directly
+                  } else if (props.condition){
+                    processedLink.condition = props.condition
+                  }
+                  else {
+                      processedLink.prop = props; // Fallback to assigning the entire props object
+                  }
+              }
+  
                 // Add the processed link to the array
-                processedLinks.push({
-                    text: lineWithoutLink,
-                    topic: topic
-                });
+                processedLinks.push(processedLink);
             });
         }
     });
@@ -134,10 +147,6 @@ var Twison = {
       // Join the collected lines into a single string and assign to dynamic_line
       dict.dynamic_line = resultLines.join('\n').trim();
   }
-    const props = Twison.extractPropsFromText(dict.text);
-    if (props) {
-      dict.props = props;
-    }
     var links = Twison.extractLinksFromText(dict.text);
     if (links) {
       dict.responses = links;
