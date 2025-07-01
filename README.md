@@ -19,82 +19,92 @@ From within your story, set the story format to CDDA_Twison. Choosing "Play" wil
 Here's an example of its output:
 
 ```json
-{
-  "passages": [
-    {
-      "text": "This is a passage that goes to [[No Where->nowhere]].\n\nor is to [[somewhere]]?\n\nHere's a [[third link]]\n\nClick [[me->someNode]]",
-      "links": [
-        {
-          "name": "No Where",
-          "link": "nowhere",
-          "pid": "3"
-        },
-        {
-          "name": "somewhere",
-          "link": "somewhere",
-          "pid": "2"
-        },
-        {
-          "name": "third link",
-          "link": "third link",
-          "pid": "4"
-        },
-        {
-          "name": "me",
-          "link": "someNode",
-          "pid": "5"
-        }
-      ],
-      "name": "First passage",
-      "pid": "1",
-      "position": {
-        "x": "553.3333333333334",
-        "y": "38.333333333333336"
+[
+  {
+    "topic": "talk_topic",
+    "tags": [
+      "INTRO"
+    ],
+    "id": "Intro",
+    "dynamic_line": "Hey there, stranger! I'm Nautilus, leader of this little caravan we have here. We've got quite a few supplies to deliver, and it looks like you could use some help. Why don't you join us?",
+    "responses": [
+      {
+        "text": "What's it going to cost me?",
+        "topic": "Cost"
       },
-      "tags": ["tag", "second-tag"]
-    },
-    {
-      "text": "You found me!",
-      "props": {
-        "foo": "bar"
-      },
-      "name": "somewhere",
-      "pid": "2",
-      "position": {
-        "x": "893.3333333333334",
-        "y": "241.66666666666669"
+      {
+        "text": "What's your story?",
+        "topic": "Backstory"
       }
-    }
-  ],
-  "name": "Test",
-  "startnode": "1",
-  "creator": "Twine",
-  "creator-version": "2.3.5",
-  "ifid": "1881C2BE-C764-4D33-ACC6-7BAEBB6D770A"
-}
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "tags": [
+      "LANDING",
+      "EXIT"
+    ],
+    "id": "Landing",
+    "dynamic_line": "Have some more questions? Ask away, and I'll do my best to shed some light.",
+    "responses": [
+      {
+        "text": "What's it going to cost me?",
+        "topic": "Cost"
+      },
+      {
+        "text": "What's your backstory?",
+        "topic": "Backstory"
+      },
+      {
+        "text": "Let's go",
+        "topic": "TALK_DONE"
+      }
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "id": "Cost",
+    "dynamic_line": "Welp, joining the caravan isn't exactly cheap, but I promise it'll be worth every single coin. We've got a lot of mouths to feed and supplies to buy, so we need people who are willing to chip in and help us out.\n\nBut don't worry, I won't ask for everything you have right away.",
+    "responses": [
+      {
+        "text": "Okay, that sounds good.",
+        "topic": "Landing"
+      }
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "id": "Backstory",
+    "dynamic_line": "Leading a caravan makes more sense than going solo because it's all about teamwork and cooperation, which are crucial for survival in a post-apocalyptic world. By being part of a group, we can protect each other from various threats like roving gangs, portal storms, or the hordes. And who knows? Maybe one day we'll find fellow survivors to join our journey and make it through this tough world together.",
+    "responses": [
+      {
+        "text": "Very interesting, thanks.",
+        "topic": "Landing"
+      }
+    ]
+  }
+]
 ```
-
-It aims to maintain all fields provided in Twine's internal XML data, while augmenting with other information where possible. For example, it doesn't touch a node's text contents, but it does parse links to provide a dictionary of links and destination nodes.
-
-## Interoperating with other systems
-
-The goal of Twison is to make it easy to use Twine as a frontend for forms of storytelling that differ from Twine's default hypertext output. While being able to copy/paste your JSON from Twison's output into some other system is doable, it's easy to imagine how a tighter integration with external systems could make it a lot easier to use Twine as a prototyping tool.
-
-The hope is that this will eventually take the form of some sort of module system that will make it easy for you to create an integration between Twine/Twison and your own engine.
-
-In the meanwhile, if you want to see what a custom integration of Twison might look like with another IF tool, check out [Tinsel](http://www.maketinsel.com), a tool that allows you to write telephone-based IF games. Although you can use Tinsel by writing game scripts in its own format, you can also create Tinsel games in Twine, by means of the [Tinsel-Twison](https://github.com/lazerwalker/tinsel-twison) project.
 
 ## Capabilities
 
-As mentioned previously, in addition to Twison parsing the basic internal XML data, additional features have been baked in:
+Additional features have been baked in:
 
 1. Links
 
-- [Links are available via the standard way of linking in Twine 2.](https://twinery.org/wiki/twine2:how_to_create_links) These will be extracted out into a `links` array on the relevant passage.
+- [Links are available via the standard way of linking in Twine 2.](https://twinery.org/wiki/twine2:how_to_create_links) Formatting expects Links to be on a new line along with the text for the response. The line containing the link will then be transformed into a response.
+```
+Hey there, stranger! I'm Nautilus, leader of this little caravan we have here. We've got quite a few supplies to deliver, and it looks like you could use some help.
+Why don't you join us?
+
+What's it going to cost me? [[Cost]]
+What's your story? [[Backstory]]
+```
 
 2. Props
 
-- Props are available by adding them as so to the passage text: "{{foo}}bar{{/foo}}". Props are parsed from the passage text and added to a `props` object on the relevant passage. For instance, the previous example would yield the following addition to the passage:
+- Props are available by adding them as so to the passage text: "{{foo}}bar{{/foo}}". Props are not currently supported. Inevitably will have them replace the conditionality for trials and eoc's.
+- Props are parsed from the passage text and added to a `props` object on the relevant passage. For instance, the previous example would yield the following addition to the passage:
 
 ```
   "props": {
