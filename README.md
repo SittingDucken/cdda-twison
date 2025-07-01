@@ -10,7 +10,7 @@ It is inspired by [Entweedle](http://www.maximumverbosity.net/twine/Entweedle/) 
 
 ## Installation
 
-From the Twine 2 story select screen, add a story format, and point it to the url `https://lazerwalker.com/twison/format.js`.
+From the Twine 2 story select screen, add a story format, and point it to the url `https://sittingducken.github.io/dist/format.js`.
 
 From within your story, set the story format to CDDA_Twison. Choosing "Play" will now give you a JSON file.
 
