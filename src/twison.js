@@ -98,7 +98,7 @@ var Twison = {
   convertPassage: function(passage) {
   	var dict = {text: passage.innerHTML};
     dict.topic = "talk_topic"; // Set default type
-    ["name"].forEach(function(attr) {
+    ["name", "tags"].forEach(function(attr) {
       var value = passage.attributes[attr].value;
       if (value) {
         dict[attr] = value;
@@ -110,8 +110,22 @@ var Twison = {
       delete dict.name; // Remove name to avoid confusion with id
     }
     if (dict.text) {
-      dict.dynamic_line = dict.text.split('\n')[0].trim(); // Get the first line and trim whitespace
-    }
+      // Split the text into lines
+      var lines = dict.text.split('\n');
+      var resultLines = [];
+  
+      // Iterate through the lines and stop when a line with a tag is found
+      for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (line.match(/\[\[.+?\]\]/)) { // Check if the line contains a tag (e.g., [[tag]])
+              break; // Stop processing further lines
+          }
+          resultLines.push(line); // Add the line to the result
+      }
+  
+      // Join the collected lines into a single string and assign to dynamic_line
+      dict.dynamic_line = resultLines.join('\n').trim();
+  }
     var links = Twison.extractLinksFromText(dict.text);
     if (links) {
       dict.responses = links;
