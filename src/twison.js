@@ -17,27 +17,35 @@ var Twison = {
   extractLinksFromText: function(text) {
     var links = text.match(/\[\[.+?\]\]/g);
     if (!links) {
-      return null;
+        return null;
     }
 
-    return links.map(function(link) {
-      // Extract the link name by removing the surrounding [[ and ]]
-      link = link.substring(2, link.length - 2);
+    // Split the text into lines
+    var lines = text.split('\n');
 
-      // Find the full line containing the link
-      var fullLine = text.split('\n').find(function(line) {
-        return line.indexOf('[[' + link + ']]') !== -1; // Replace template literal with string concatenation
-      });
+    var processedLinks = []; // Array to store processed links
 
-      // Remove the link from the full line
-      var lineWithoutLink = fullLine.replace('[[' + link + ']]', '').trim(); // Replace template literal with string concatenation
+    lines.forEach(function(line) {
+        var lineLinks = line.match(/\[\[.+?\]\]/g); // Find all links in the current line
+        if (lineLinks) {
+            lineLinks.forEach(function(link) {
+                // Extract the link name by removing the surrounding [[ and ]]
+                var topic = link.substring(2, link.length - 2);
 
-      return {
-        text: lineWithoutLink, // Include the full line without the link
-        topic: link,
-      };
+                // Remove the link from the full line
+                var lineWithoutLink = line.replace(link, '').trim();
+
+                // Add the processed link to the array
+                processedLinks.push({
+                    text: lineWithoutLink,
+                    topic: topic
+                });
+            });
+        }
     });
-  },
+
+    return processedLinks;
+},
   /**
    * Extract the prop entities from the provided text.
    *
@@ -126,13 +134,13 @@ var Twison = {
       // Join the collected lines into a single string and assign to dynamic_line
       dict.dynamic_line = resultLines.join('\n').trim();
   }
-    var links = Twison.extractLinksFromText(dict.text);
-    if (links) {
-      dict.responses = links;
-    }
     const props = Twison.extractPropsFromText(dict.text);
     if (props) {
       dict.props = props;
+    }
+    var links = Twison.extractLinksFromText(dict.text);
+    if (links) {
+      dict.responses = links;
     }
     if (dict.tags) {
       dict.tags = dict.tags.split(" ");
