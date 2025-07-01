@@ -42,7 +42,71 @@ Here's an example of its output:
     "topic": "talk_topic",
     "tags": [
       "LANDING",
+      "EXIT"[
+  {
+    "topic": "talk_topic",
+    "tags": [
+      "INTRO"
+    ],
+    "id": "Intro",
+    "dynamic_line": "Hey there, stranger! I'm Nautilus, leader of this little caravan we have here. We've got quite a few supplies to deliver, and it looks like you could use some help. Why don't you join us?",
+    "responses": [
+      {
+        "text": "What's it going to cost me?",
+        "topic": "Cost"
+      },
+      {
+        "text": "What's your story?",
+        "topic": "Backstory"
+      }
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "tags": [
+      "LANDING",
       "EXIT"
+    ],
+    "id": "Landing",
+    "dynamic_line": "Have some more questions? Ask away, and I'll do my best to shed some light.",
+    "responses": [
+      {
+        "text": "What's it going to cost me?",
+        "topic": "Cost"
+      },
+      {
+        "text": "What's your backstory?",
+        "topic": "Backstory"
+      },
+      {
+        "text": "Let's go",
+        "topic": "TALK_DONE"
+      }
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "id": "Cost",
+    "dynamic_line": "Welp, joining the caravan isn't exactly cheap, but I promise it'll be worth every single coin. We've got a lot of mouths to feed and supplies to buy, so we need people who are willing to chip in and help us out.\n\nBut don't worry, I won't ask for everything you have right away.",
+    "responses": [
+      {
+        "text": "Okay, that sounds good.",
+        "topic": "Landing"
+      }
+    ]
+  },
+  {
+    "topic": "talk_topic",
+    "id": "Backstory",
+    "dynamic_line": "Leading a caravan makes more sense than going solo because it's all about teamwork and cooperation, which are crucial for survival in a post-apocalyptic world. By being part of a group, we can protect each other from various threats like roving gangs, portal storms, or the hordes. And who knows? Maybe one day we'll find fellow survivors to join our journey and make it through this tough world together.",
+    "responses": [
+      {
+        "text": "Very interesting, thanks.",
+        "topic": "Landing"
+      }
+    ]
+  }
+]
     ],
     "id": "Landing",
     "dynamic_line": "Have some more questions? Ask away, and I'll do my best to shed some light.",
@@ -114,26 +178,9 @@ What's your story? [[Backstory]]
 
 2. Props
 
-- Props are available by adding them as so to the passage text: "{{foo}}bar{{/foo}}". Props are not currently supported. Inevitably will have them replace the conditionality for trials and eoc's.
-- Props are parsed from the passage text and added to a `props` object on the relevant passage. For instance, the previous example would yield the following addition to the passage:
+- Props are available by adding them as so to the passage text: "{{foo}}bar{{/foo}}". Props are only supported in a single instance. eg {{condition}}{{u_has_var}}dancing{{/u_has_var}}{{/condition}} works but {{condition}}(same stuff){{/condition}}{{effect}}(new_stuff){{/effect}} doesn't work. 
 
-```
-  "props": {
-    "foo": "bar"
-  },
-```
-
-- One can add "nested" props to create more complex objects. For instance, an example like "{{foo}}{{bar}}value{{/bar}}{{bar2}}value2{{/bar2}}{{/foo}}" would yield:
-
-```
-  "props": {
-    "foo": {
-    	"bar": "value",
-    	"bar2: "value2"
-    }
-  },
-```
-3. Tags
+1. Tags
 - Tags are included for your benefit as reminders. They currently serve no functionallity and need to be deleted before ingesting into CDDA.
 
 ## Development
