@@ -1,0 +1,44 @@
+:: StoryTitle
+Nautilus_Intro
+
+
+:: StoryData
+{
+  "ifid": "4422091B-426E-4C3F-B426-C8138CFCB5CB",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Intro",
+  "zoom": 1
+}
+
+
+:: Backstory {"position":"925,575","size":"100,100"}
+Leading a caravan makes more sense than going solo because it's all about teamwork and cooperation, which are crucial for survival in a post-apocalyptic world. By being part of a group, we can protect each other from various threats like roving gangs, portal storms, or the hordes. And who knows? Maybe one day we'll find fellow survivors to join our journey and make it through this tough world together.
+
+[[Landing]]
+     
+
+ 
+
+
+
+:: Cost {"position":"925,325","size":"100,100"}
+Welp, joining the caravan isn't exactly cheap, but I promise it'll be worth every single coin. We've got a lot of mouths to feed and supplies to buy, so we need people who are willing to chip in and help us out.
+
+But don't worry, I won't ask for everything you have right away.
+
+[[Landing]]
+
+
+
+:: Intro [INTRO] {"position":"850,450","size":"100,100"}
+Hey there, stranger! I'm Nautilus, leader of this little caravan we have here. We've got quite a few supplies to deliver, and it looks like you could use some help. Why don't you join us?
+
+[[Cost]]
+[[Backstory]]
+
+
+
+
+:: Landing {"position":"975,450","size":"100,100"}
+Have some more questions? Ask away, and I'll do my best to shed some light.
