@@ -30,33 +30,22 @@ var Twison = {
         var lineLinks = line.match(/\[\[.+?\]\]/g); // Find all links in the current line
         if (lineLinks) {
             lineLinks.forEach(function(link) {
+                var processedLink = {};
                 // Extract the link name by removing the surrounding [[ and ]]
                 var topic = link.substring(2, link.length - 2);
-
                 // Remove the link from the full line
-                var lineWithoutLink = line.replace(link, '').trim();
-                var processedLink = {topic: topic};
+                var lineCleaned = line.replace(link, '').replace(propRegexPattern, '').trim();
                 var props = Twison.extractPropsFromText(line);
-                var lineCleaned = lineWithoutLink.replace(propRegexPattern, '').trim();
+                processedLink.topic = topic;
                 processedLink.text = lineCleaned;
                 if (props) {
-                  // Check if the props object contains an "effect" key
-                  if (props.effect) {
-                      processedLink.effect = props.effect; // Assign the "effect" key directly
-                  } else if (props.condition){
-                    processedLink.condition = props.condition
-                  }
-                  else {
-                      processedLink.prop = props; // Fallback to assigning the entire props object
-                  }
-              }
-  
+                  Object.assign(processedLink, props);
+                }
                 // Add the processed link to the array
                 processedLinks.push(processedLink);
             });
         }
     });
-
     return processedLinks;
 },
   /**
