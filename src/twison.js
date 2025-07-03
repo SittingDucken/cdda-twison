@@ -135,10 +135,10 @@ var Twison = {
       var lines = dict.text.split('\n');
       var resultLines = [];
   
-      // Iterate through the lines and stop when a line with a tag is found
+      // Iterate through the lines and stop when a line with a link is found
       for (var i = 0; i < lines.length; i++) {
           var line = lines[i].trim();
-          if (line.match(/\[\[.+?\]\]/)) { // Check if the line contains a tag (e.g., [[tag]])
+          if (line.match(/\[\[.+?\]\]/)) { // Check if the line contains a tag (e.g., [[link]])
               break; // Stop processing further lines
           }
           resultLines.push(line); // Add the line to the result
@@ -146,6 +146,13 @@ var Twison = {
   
       // Join the collected lines into a single string and assign to dynamic_line
       dict.dynamic_line = resultLines.join('\n').trim();
+      const propRegexPattern = /\{\{((\s|\S)+?)\}\}((\s|\S)+?)\{\{\/\1\}\}/gm;
+      var props = Twison.extractPropsFromText(dict.dynamic_line);
+      if (props){
+        dict.dynamic_line = props;
+      } else {
+        dict.dynamic_line = dict.dynamic_line.replace(propRegexPattern, '').trim();
+      } //Add logic if prop key concantenate is used.
   }
     var links = Twison.extractLinksFromText(dict.text);
     if (links) {
